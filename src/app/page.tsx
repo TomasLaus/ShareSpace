@@ -29,14 +29,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   title: z.string().min(1).max(200),
-  file: z.custom<FileList>((val) => val instanceof FileList, 'Required')
-        .refine((files) => files.length > 0, 'Required'),
+  file: z
+    .custom<FileList>((val) => val instanceof FileList, 'Required')
+    .refine((files) => files.length > 0, 'Required'),
 });
 
 export default function Home() {
+  const { toast } = useToast();
   const organization = useOrganization();
   const user = useUser();
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -49,13 +52,13 @@ export default function Home() {
     },
   });
 
-  const fileRef = form.register('file')
+  const fileRef = form.register('file');
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     console.log(values.file);
     const postUrl = await generateUploadUrl();
-    if (!orgId) return; 
+    if (!orgId) return;
 
     const result = await fetch(postUrl, {
       method: 'POST',
@@ -63,13 +66,28 @@ export default function Home() {
         'Content-Type': values.file[0].type,
       },
       body: values.file[0],
-    })
+    });
     const { storageId } = await result.json();
 
-   await createFile({ name: values.title, fileId: storageId, orgId });
+    try {
+      await createFile({ name: values.title, fileId: storageId, orgId });
 
-   form.reset();
-   setIsFileDialogOpen(false)
+      form.reset();
+
+      setIsFileDialogOpen(false);
+
+      toast({
+        variant: 'success',
+        title: 'File Uploaded',
+        description: 'Now everyone can view your file',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong',
+        description: 'Your file could not be uploaded',
+      });
+    }
   }
 
   let orgId: string | undefined = undefined;
@@ -77,7 +95,7 @@ export default function Home() {
     orgId = organization.organization?.id ?? user.user?.id;
   }
 
-  const [isFileDialogOpen, setIsFileDialogOpen] = useState(false)
+  const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
 
   const createFile = useMutation(api.files.createFile);
   const files = useQuery(api.files.getFiles, orgId ? { orgId } : 'skip');
@@ -87,14 +105,14 @@ export default function Home() {
       <div className='flex justify-between items-center'>
         <h1 className='text-4xl font-bold'>Your Files</h1>
 
-        <Dialog open={isFileDialogOpen} onOpenChange={setIsFileDialogOpen}>
+        <Dialog
+          open={isFileDialogOpen}
+          onOpenChange={(isOpen) => {
+            setIsFileDialogOpen(isOpen);
+            form.reset();
+          }}>
           <DialogTrigger asChild>
-            <Button
-              onClick={() => {
-               
-              }}>
-              Upload File
-            </Button>
+            <Button onClick={() => {}}>Upload File</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -124,10 +142,7 @@ export default function Home() {
                         <FormItem>
                           <FormLabel>Your file</FormLabel>
                           <FormControl>
-                            <Input
-                              type='file'
-                              {...fileRef}
-                            />
+                            <Input type='file' {...fileRef} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
