@@ -29,8 +29,11 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useState } from 'react';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
-function FileCardActions() {
+function FileCardActions({ file }: { file: Doc<'files'> }) {
+  const deleteFile = useMutation(api.files.deleteFile);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   return (
     <>
@@ -39,15 +42,14 @@ function FileCardActions() {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your account and remove
-              your data from our servers.
+              This action cannot be undone. This will permanently delete your file from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                // TODO: delete file
+                deleteFile({ fileId: file._id });
               }}>
               Continue
             </AlertDialogAction>
@@ -79,7 +81,7 @@ export function FileCard({ file }: { file: Doc<'files'> }) {
       <CardHeader className='relative'>
         <CardTitle>{file.name} </CardTitle>
         <div className='absolute top-2 right-2'>
-          <FileCardActions />
+          <FileCardActions file={file} />
         </div>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
