@@ -7,6 +7,7 @@ import { useOrganization, useUser } from '@clerk/nextjs';
 import { z } from 'zod';
 import { UploadButton } from './uppload-button';
 import { FileCard } from './file-card';
+import Image from 'next/image';
 
 export default function Home() {
   const organization = useOrganization();
@@ -21,17 +22,29 @@ export default function Home() {
 
   return (
     <main className='container mx-auto pt-12'>
-      <div className='flex justify-between items-center mb-8'>
-        <h1 className='text-4xl font-bold'>Your Files</h1>
-        <UploadButton />
-      </div>
+      {files && files.length === 0 && (
+        <div className='flex flex-col gap-8 items-center w-full mt-24'>
+          <Image alt='No data' src='/empty.svg' width={300} height={300} />
+          <div className='text-2xl font-medium'>You have no files, upload one!</div>
+          <UploadButton />
+        </div>
+      )}
 
       {/*  */}
-      <div className='grid grid-cols-4 gap-4'>
-        {files?.map((file) => {
-          return <FileCard key={file._id} file={file} />;
-        })}
-      </div>
+      {files && files.length > 0 && (
+        <>
+          <div className='flex justify-between items-center mb-8'>
+            <h1 className='text-4xl font-bold'>Your Files</h1>
+            <UploadButton />
+          </div>
+          <div className='grid grid-cols-4 gap-4'>
+            {files?.map((file) => {
+              return <FileCard key={file._id} file={file} />;
+            })}
+          </div>
+        </>
+      )}
+
       {/*  */}
     </main>
   );
