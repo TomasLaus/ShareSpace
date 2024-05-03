@@ -32,7 +32,7 @@ import { ReactNode, useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useToast } from '@/components/ui/use-toast';
-import Image from 'next/image'; 
+import Image from 'next/image';
 
 function FileCardActions({ file }: { file: Doc<'files'> }) {
   const deleteFile = useMutation(api.files.deleteFile);
@@ -84,8 +84,7 @@ function FileCardActions({ file }: { file: Doc<'files'> }) {
   );
 }
 
-
-export function FileCard({ file }: { file: Doc<"files"> & { url: string | null } }) {
+export function FileCard({ file }: { file: Doc<'files'> & { url: string | null } }) {
   const typeIcons = {
     image: <ImageIcon />,
     pdf: <FileTextIcon />,
@@ -104,12 +103,15 @@ export function FileCard({ file }: { file: Doc<"files"> & { url: string | null }
         </div>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
-      <CardContent>
-      {file.type === "image" && file.url && (
-          <Image alt={file.name} width="200" height="100" src={file.url} />
+      <CardContent className='h-[200px] flex justify-center items-center'>
+        {file.type === 'image' && file.url && (
+          <Image alt={file.name} width='200' height='100' src={file.url} />
         )}
+
+        {file.type === 'csv' && <GanttChartIcon className='w-20 h-20' />}
+        {file.type === 'pdf' && <FileTextIcon className='w-20 h-20' />}
       </CardContent>
-      <CardFooter>
+      <CardFooter className='flex justify-center'>
         <Button>Download</Button>
       </CardFooter>
     </Card>
