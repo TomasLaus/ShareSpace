@@ -39,6 +39,8 @@ function FileCardActions({ file }: { file: Doc<'files'> }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { toast } = useToast();
 
+
+  
   return (
     <>
       <AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
@@ -84,7 +86,7 @@ function FileCardActions({ file }: { file: Doc<'files'> }) {
   );
 }
 
-export function FileCard({ file }: { file: Doc<'files'> & { url: string | null } }) {
+export function FileCard({ file }: { file: Doc<'files'> & { url: string | URL | undefined } }) {
   const typeIcons = {
     image: <ImageIcon />,
     pdf: <FileTextIcon />,
@@ -96,24 +98,27 @@ export function FileCard({ file }: { file: Doc<'files'> & { url: string | null }
       <CardHeader className='relative'>
         <CardTitle className='flex gap-2'>
           <div className='flex justify-center'>{typeIcons[file.type]}</div>
-          {file.name}{' '}
+          {file.name}
         </CardTitle>
         <div className='absolute top-2 right-2'>
           <FileCardActions file={file} />
         </div>
-        {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
       <CardContent className='h-[200px] flex justify-center items-center'>
         {file.type === 'image' && file.url && (
-          <Image alt={file.name} width='200' height='100' src={file.url} />
+          <Image alt={file.name} width='200' height='100' src={file.url.toString()} />
         )}
+        {!file.url && file.type === 'image' && <p>No image available</p>}
 
         {file.type === 'csv' && <GanttChartIcon className='w-20 h-20' />}
         {file.type === 'pdf' && <FileTextIcon className='w-20 h-20' />}
       </CardContent>
       <CardFooter className='flex justify-center'>
-        <Button>Download</Button>
+        <Button onClick={() => {
+          window.open(file.url ? file.url.toString() : '', '_blank');
+        }}>Download</Button>
       </CardFooter>
     </Card>
   );
 }
+
