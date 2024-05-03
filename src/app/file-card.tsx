@@ -1,5 +1,5 @@
-import { MoreVertical, TrashIcon } from 'lucide-react';
-import { Doc } from '../../convex/_generated/dataModel';
+import { FileTextIcon, GanttChartIcon, ImageIcon, MoreVertical, TrashIcon } from 'lucide-react';
+import { Doc, Id } from '../../convex/_generated/dataModel';
 import {
   Card,
   CardContent,
@@ -28,10 +28,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useToast } from '@/components/ui/use-toast';
+import Image from 'next/image'; 
 
 function FileCardActions({ file }: { file: Doc<'files'> }) {
   const deleteFile = useMutation(api.files.deleteFile);
@@ -83,18 +84,30 @@ function FileCardActions({ file }: { file: Doc<'files'> }) {
   );
 }
 
-export function FileCard({ file }: { file: Doc<'files'> }) {
+
+export function FileCard({ file }: { file: Doc<"files"> & { url: string | null } }) {
+  const typeIcons = {
+    image: <ImageIcon />,
+    pdf: <FileTextIcon />,
+    csv: <GanttChartIcon />,
+  } as Record<Doc<'files'>['type'], ReactNode>;
+
   return (
     <Card>
       <CardHeader className='relative'>
-        <CardTitle>{file.name} </CardTitle>
+        <CardTitle className='flex gap-2'>
+          <div className='flex justify-center'>{typeIcons[file.type]}</div>
+          {file.name}{' '}
+        </CardTitle>
         <div className='absolute top-2 right-2'>
           <FileCardActions file={file} />
         </div>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+      {file.type === "image" && file.url && (
+          <Image alt={file.name} width="200" height="100" src={file.url} />
+        )}
       </CardContent>
       <CardFooter>
         <Button>Download</Button>
