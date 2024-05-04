@@ -84,7 +84,7 @@ function FileCardActions({ file }: { file: Doc<'files'> }) {
   );
 }
 
-export function FileCard({ file }: { file: Doc<'files'> & { url?: string | URL | undefined } }) {
+export function FileCard({ file }: { file: Doc<'files'> & { url?: string | URL | null } }) {
   const typeIcons = {
     image: <ImageIcon />,
     pdf: <FileTextIcon />,
