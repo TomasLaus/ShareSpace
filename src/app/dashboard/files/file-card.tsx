@@ -1,5 +1,5 @@
 import { FileTextIcon, GanttChartIcon, ImageIcon, MoreVertical, TrashIcon } from 'lucide-react';
-import { Doc, Id } from '../../convex/_generated/dataModel';
+import { Doc, Id } from '../../../../convex/_generated/dataModel';
 import {
   Card,
   CardContent,
@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { ReactNode, useState } from 'react';
 import { useMutation } from 'convex/react';
-import { api } from '../../convex/_generated/api';
+import { api } from '../../../../convex/_generated/api';
 import { useToast } from '@/components/ui/use-toast';
 import Image from 'next/image';
 
