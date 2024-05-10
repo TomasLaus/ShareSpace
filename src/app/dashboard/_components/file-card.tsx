@@ -101,14 +101,14 @@ function FileCardActions({ file, isFavorited }: { file: Doc<'files'>; isFavorite
             )}
           </DropdownMenuItem>
           {/*  */}
-          <Protect role='org:admin' fallback={<></>}>
+          {/* <Protect role='org:admin' fallback={<></>}> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => setIsConfirmOpen(true)}
               className='flex gap-1 text-red-600 items-center cursor-pointer'>
               <TrashIcon className='h-4 w-4' /> Delete
             </DropdownMenuItem>
-          </Protect>
+          {/* </Protect> */}
           <DropdownMenuSeparator />
         </DropdownMenuContent>
       </DropdownMenu>
