@@ -57,7 +57,7 @@ function FileCardActions({ file, isFavorited }: { file: Doc<'files'>; isFavorite
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your file from our servers.
+              This action will mark the file for deletion.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -67,8 +67,8 @@ function FileCardActions({ file, isFavorited }: { file: Doc<'files'>; isFavorite
                 await deleteFile({ fileId: file._id });
                 toast({
                   variant: 'default',
-                  title: 'File Deleted',
-                  description: 'Your file is now gone from the system.',
+                  title: 'File marked for deletion.',
+                  description: 'Your file is now in the trash, and it will be deleted in soon.',
                 });
               }}>
               Continue
