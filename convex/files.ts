@@ -1,5 +1,5 @@
 import { ConvexError, v } from 'convex/values';
-import { mutation, MutationCtx, query, QueryCtx } from './_generated/server';
+import { internalMutation, mutation, MutationCtx, query, QueryCtx } from './_generated/server';
 import { getUser } from './users';
 import { fileTypes } from './schema';
 import { Id } from './_generated/dataModel';
@@ -116,6 +116,24 @@ export const getFiles = query({
     return filesWithUrl;
   },
 });
+
+export const deleteAllFiles = internalMutation({
+  args: {
+  },
+  async handler(ctx, args) {
+    const files = await ctx.db
+      .query('files')
+      .withIndex('by_shouldDelete', (q) => q.eq('shouldDelete', true))
+      .collect();
+
+    await Promise.all(
+      files.map(async (file) => {
+        await ctx.storage.delete(file.fileId);
+        return await ctx.db.delete(file._id);
+      }),
+    );
+  },
+})
 
 export const deleteFile = mutation({
   args: {

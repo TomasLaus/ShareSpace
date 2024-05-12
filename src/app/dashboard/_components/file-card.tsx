@@ -7,6 +7,7 @@ import {
   StarIcon,
   StarOff,
   TrashIcon,
+  UndoIcon,
 } from 'lucide-react';
 import { Doc, Id } from '../../../../convex/_generated/dataModel';
 import {
@@ -46,6 +47,7 @@ import { Protect } from '@clerk/nextjs';
 
 function FileCardActions({ file, isFavorited }: { file: Doc<'files'>; isFavorited: boolean }) {
   const deleteFile = useMutation(api.files.deleteFile);
+  const restoreFile = useMutation(api.files.restoreFile);
   const toggleFavorite = useMutation(api.files.toggleFavorite);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { toast } = useToast();
@@ -104,9 +106,24 @@ function FileCardActions({ file, isFavorited }: { file: Doc<'files'>; isFavorite
           <Protect role='org:admin' fallback={<></>}>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => setIsConfirmOpen(true)}
-              className='flex gap-1 text-red-600 items-center cursor-pointer'>
-              <TrashIcon className='h-4 w-4' /> Delete
+              onClick={() => {
+                if (file.shouldDelete) {
+                  restoreFile({ fileId: file._id });
+                } else {
+                  setIsConfirmOpen(true);
+                }
+              }}
+              className='flex gap-1 items-center cursor-pointer'>
+              {file.shouldDelete ? (
+                <div className='flex gap-1 text-green-800 items-center cursor-pointer'>
+                  <UndoIcon className='h-4 w-4 ' /> Restore{' '}
+                </div>
+              ) : (
+                <div className='flex gap-1 text-red-600 items-center cursor-pointer'>
+                  {' '}
+                  <TrashIcon className='h-4 w-4' /> Delete{' '}
+                </div>
+              )}
             </DropdownMenuItem>
           </Protect>
           <DropdownMenuSeparator />
