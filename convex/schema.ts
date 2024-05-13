@@ -11,10 +11,13 @@ export default defineSchema({
     orgId: v.string(),
     fileId: v.id('_storage'),
     shouldDelete: v.optional(v.boolean()),
-  }).index('by_orgId', ['orgId'])
+  })
+    .index('by_orgId', ['orgId'])
     .index('by_shouldDelete', ['shouldDelete']),
   users: defineTable({
     tokenIdentifier: v.string(),
+    name: v.optional(v.string()),
+    image: v.optional(v.string()),
     orgIds: v.array(
       v.object({
         orgId: v.string(),
