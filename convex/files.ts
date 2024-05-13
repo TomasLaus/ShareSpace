@@ -60,6 +60,7 @@ export const createFile = mutation({
       fileId: args.fileId,
       orgId: args.orgId,
       type: args.type,
+      userId: hasAccess.user._id,
     });
   },
 });
