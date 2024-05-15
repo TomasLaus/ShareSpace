@@ -13,6 +13,8 @@ import { SearchBar } from './search-bar';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { DataTable } from './file-table';
+import { columns } from './columns';
 
 function Placeholder() {
   return (
@@ -51,6 +53,13 @@ export default function FileBrowser({
   );
   const isLoading = files === undefined;
 
+  const modifiedFiles = files?.map((file) => {
+    return {
+      ...file,
+      isFavorited: (favorites ?? []).some((favorite) => favorite.fileId === file._id),
+    };
+  }) ?? [];
+
   return (
     <div>
       {isLoading && (
@@ -72,9 +81,11 @@ export default function FileBrowser({
 
           {files.length === 0 && <Placeholder />}
 
+          <DataTable columns={columns} data={modifiedFiles} />
+
           <div className='grid grid-cols-4 gap-4'>
-            {files?.map((file) => {
-              return <FileCard favorites={favorites ?? []} key={file._id} file={file} />;
+            {modifiedFiles?.map((file) => {
+              return <FileCard key={file._id} file={file} />;
             })}
           </div>
         </>
