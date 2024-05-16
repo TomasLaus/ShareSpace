@@ -71,6 +71,7 @@ export const getFiles = query({
     query: v.optional(v.string()),
     favorites: v.optional(v.boolean()),
     deletedOnly: v.optional(v.boolean()),
+    type: v.optional(fileTypes),
   },
   handler: async (ctx, args) => {
     const hasAccess = await hasAccessToOrg(ctx, args.orgId);
@@ -105,6 +106,10 @@ export const getFiles = query({
       files = files.filter((file) => file.shouldDelete);
     } else {
       files = files.filter((file) => !file.shouldDelete);
+    }
+
+    if (args.type) {
+      files = files.filter((file) => file.type === args.type);
     }
 
     const filesWithUrl = await Promise.all(
