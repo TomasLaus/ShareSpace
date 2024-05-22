@@ -1,10 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { OrganizationSwitcher, SignedIn, UserButton, useSession } from '@clerk/nextjs';
+import { OrganizationSwitcher, SignedIn, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export function Header() {
-  const session = useSession();
 
   return (
     <div className='relative z-10 border-b py-4 bg-gray-50'>
