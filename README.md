@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# File Storage App with Role-Based Authorization
+
+Welcome to ShareSpace! This is a full-stack file storage application built with Next.js, ShadCN, and TypeScript. It supports organizations, file uploads, management, role-based authorization, authentication, and more. The app features a wide range of UI components, including dialogs, modals, toasts, dropdowns, and more.
+
+## Features
+
+- **Organizations**: Manage files within different organizations.
+- **File Upload and Management**: Upload, delete, and manage files easily.
+- **Role-Based Authorization**: Secure your files with role-based access control.
+- **Authentication**: User authentication and management using Clerk.
+- **UI Components**: Rich set of UI components including dialogs, modals, toasts, and dropdowns.
+- **Favorites**: Mark files as favorites for quick access.
+- **Trash Feature**: Restore or permanently delete files from trash.
+- **Cron Jobs**: Automatic deletion of files with cron jobs.
+- **Responsive Design**: A responsive and intuitive user interface.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Make sure you have the following installed on your machine:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js
+- npm or yarn
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone the repository:
 
-## Learn More
+   ```bash
+   git clone https://github.com/TomasLaus/ShareSpace.git
+   cd ShareSpace
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Install dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   or
 
-## Deploy on Vercel
+   ```bash
+   yarn install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Set up environment variables:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   Create a `.env.local` file in the root of the project and add your environment variables.
+
+   ````env
+    # Deployment used by `npx convex dev`
+
+
+    CONVEX_DEPLOYMENT=
+
+    NEXT_PUBLIC_CONVEX_URL=
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+    CLERK_SECRET_KEY=
+   ````
+
+### Running the App
+
+1. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+   or
+
+   ```bash
+   yarn dev
+   ```
+   and run Convex
+
+   ```npx
+   npx convex dev
+   ```
+
+2. Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+
+## Project Structure
+
+- **/components**: Contains the React (Shadcn) components used in the app.
+- **/pages**: Next.js pages for routing.
+- **/styles**: Styling files for the application.
+- **/utils**: Utility functions and helpers.
+- **/hooks**: Custom React hooks.
+
+## Live Demo
+
+Check out the live demo of the app [here](https://sharespace-app.vercel.app/).
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for any improvements.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+Happy coding!
