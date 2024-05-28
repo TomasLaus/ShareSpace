@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function LandingPage() {
   return (
-    <div className='bg-white'>
+    <div className='bg-white h-full'>
       <div className='relative isolate px-6 pt-14 lg:px-8'>
         <div
           className='absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
@@ -19,7 +19,6 @@ export default function LandingPage() {
         <div className='mx-auto max-w-2xl py-8'>
           <div className='hidden sm:mb-8 sm:flex sm:justify-center'></div>
           <div className='text-center'>
-            <Image alt='logo' src='/logo.png' width={200} height={200} className='mx-auto mb-8' />
             <h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
               The easiest way to upload and share files with your company
             </h1>
